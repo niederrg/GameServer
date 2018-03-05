@@ -15,13 +15,13 @@ public class Diamond
 {
     private ArrayList<LineSegment> walls;
     private Polygon diamond;
-    public double x;
-    public double y;
-    public double r;
+    public int x;
+    public int y;
+    public int r;
     Point top, bottom, left, right;
     
     
-    public Diamond(double x, double y, double r) {
+    public Diamond(int x, int y, int r) {
         this.x = x;
         this.y = y;
         this.r = r;
@@ -30,17 +30,19 @@ public class Diamond
         left = new Point(x, y+r);
         bottom = new Point(x+r, y+(2*r));
         
-        
+
         
         walls = new ArrayList<LineSegment>();
 
-        walls.add(new LineSegment(top, right));
-        walls.add(new LineSegment(right, bottom));
-        walls.add(new LineSegment(bottom, left));
-        walls.add(new LineSegment(left, top));
+        walls.add(new LineSegment(top, left));
+        walls.add(new LineSegment(left, bottom));
+        walls.add(new LineSegment(bottom, right));
+        walls.add(new LineSegment(right, top));
     }
     
-    public void setX(Double newX) {
+    
+    
+    public void setX(int newX) {
         double deltaX = newX - this.x;
         this.top.x += deltaX;
         this.right.x += deltaX;
@@ -49,7 +51,7 @@ public class Diamond
         this.x = newX;
     }
     
-    public void setY(Double newY) {
+    public void setY(int newY) {
         double deltaY = newY - this.y;
         this.top.y += deltaY;
         this.right.y += deltaY;
@@ -97,18 +99,32 @@ public class Diamond
     
     public Shape getShape()
     {
-        diamond = new Polygon(top.x, top.y, right.x, right.y, left.x, left.y, bottom.x, bottom.y);
+        diamond = new Polygon(top.x, top.y, right.x, right.y, bottom.x, bottom.y, left.x, left.y);
         diamond.setFill(Color.WHITE);
         diamond.setStroke(Color.BLACK);
         return diamond;
     }
+    public double getWallEndX(int i){
+        return walls.get(i).a.x;
+    }
+    public double getWallEndY(int i){
+        return walls.get(i).a.y;
+    }
+    
     
     public void updateShape()
     {
-        walls.clear();
-        walls.add(new LineSegment(top, right));
-        walls.add(new LineSegment(right, bottom));
-        walls.add(new LineSegment(bottom, left));
-        walls.add(new LineSegment(left, top));
+        this.top = walls.get(0).a;
+        this.left = walls.get(1).a;
+        this.bottom = walls.get(2).a;
+        this.right = walls.get(3).a;
+        
+        diamond.getPoints().clear();
+        
+        diamond.getPoints().addAll(
+                top.x, top.y,
+                right.x, right.y,
+                bottom.x, bottom.y,
+                left.x, left.y);
     }
 }

@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
+import simulation.Diamond;
 import simulation.Simulation;
 
 public class FXMLController implements Initializable {
@@ -60,8 +61,8 @@ public class FXMLController implements Initializable {
 class HandleAClient implements Runnable, game.GameConstants {
     private Socket socket;
     private TextArea textArea;
-    private Player player;
-    private Player player2;
+    private Diamond player;
+    private Diamond player2;
     private Simulation sim;
 
     public HandleAClient(Socket socket,TextArea textArea,int clientNo, Simulation sim) {
@@ -69,12 +70,12 @@ class HandleAClient implements Runnable, game.GameConstants {
       this.textArea = textArea;
       this.sim = sim;
       if (clientNo==1){
-          player = new Player(120, 120);
-          player2 = new Player(60,60);
+          player = new Diamond(120, 120,10);
+          player2 = new Diamond(60,60,10);
       }
       else{
-          player = new Player(60,60);
-          player2 = new Player(120,120);
+          player = new Diamond(60,60,10);
+          player2 = new Diamond(120,120,10);
       }    
     }
     
@@ -100,20 +101,39 @@ class HandleAClient implements Runnable, game.GameConstants {
               case GET_X: {
                   String opponent = inputFromClient.readLine();
                   if (opponent.equalsIgnoreCase("false")){
-                    outputToClient.println(player.getX());
+                    outputToClient.println(player.x);
                   } else{
-                    outputToClient.println(player2.getX());
+                    outputToClient.println(player2.x);
                   }
                   outputToClient.flush();
                   break;
               }
               case GET_Y: {
-                  outputToClient.println(player.getY());
+                  String opponent = inputFromClient.readLine();
+                  if (opponent.equalsIgnoreCase("false")){
+                      outputToClient.println(player.y);
+                  }else{
+                    outputToClient.println(player2.y);
+                  }
                   outputToClient.flush();
                   break;
               }
               case EVOLVE: {
                   sim.evolve(Integer.parseInt(inputFromClient.readLine()));
+              }
+              case GET_POINTS: {
+                  String opponent = inputFromClient.readLine();
+                  if (opponent.equalsIgnoreCase("false")){
+                      for(int i=0;i<4;i++){
+                          outputToClient.println(player.getWallEndX(i));
+                          outputToClient.println(player.getWallEndY(i));
+                      }
+                  }else{
+                      for(int i=0;i<4;i++){
+                          outputToClient.println(player2.getWallEndX(i));
+                          outputToClient.println(player2.getWallEndY(i));
+                      }
+                  }
               }
 //              case GET_COMMENT: {
 //                  int n = Integer.parseInt(inputFromClient.readLine());
