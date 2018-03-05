@@ -64,11 +64,13 @@ class HandleAClient implements Runnable, game.GameConstants {
     private Diamond player;
     private Diamond player2;
     private Simulation sim;
+    private int clientNum;
 
     public HandleAClient(Socket socket,TextArea textArea,int clientNo, Simulation sim) {
       this.socket = socket;
       this.textArea = textArea;
       this.sim = sim;
+      this.clientNum = clientNo;
       if (clientNo==1){
           player = new Diamond(120, 120,10);
           player2 = new Diamond(60,60,10);
@@ -134,6 +136,10 @@ class HandleAClient implements Runnable, game.GameConstants {
                           outputToClient.println(player2.getWallEndY(i));
                       }
                   }
+              }
+              case GET_CLIENT_NUM: {
+                  outputToClient.println(clientNum);
+                  outputToClient.flush();
               }
 //              case GET_COMMENT: {
 //                  int n = Integer.parseInt(inputFromClient.readLine());
