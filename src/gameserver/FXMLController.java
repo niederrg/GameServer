@@ -69,8 +69,6 @@ class HandleAClient implements Runnable, game.GameConstants {
     private Diamond player2;
     private Simulation sim;
     private int clientNum;
-    private static int p1score;
-    private static int p2score;
     private static Boolean p1ready;
     private static Boolean p2ready;
 
@@ -91,12 +89,8 @@ class HandleAClient implements Runnable, game.GameConstants {
       }    
     }
     
-    public void score(int playerNum){
-        if (playerNum == 1){
-            p1score ++;
-        } else if (playerNum ==2){
-            p2score ++;
-        }
+    public int getScore(int playerNum){
+        return sim.getScore(playerNum);
     }
     
     public void run() {
@@ -196,15 +190,8 @@ class HandleAClient implements Runnable, game.GameConstants {
                   break;
               }
               case GET_SCORE: {
-                  int pNum = 0;
-                  try {
-                      pNum = Integer.parseInt(inputFromClient.readLine());
-                  } catch (Exception ex) {}
-                  if (pNum ==1 ){
-                      outputToClient.println(p1score);
-                  } else if (pNum == 2){
-                      outputToClient.println(p2score);
-                  }
+                  outputToClient.println(getScore(1));
+                  outputToClient.println(getScore(2));
                   outputToClient.flush();
                   break;
               }

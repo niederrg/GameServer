@@ -14,6 +14,8 @@ public class Simulation {
     private Diamond player1;
     private Diamond player2;
     private Lock lock;
+    private int p1score;
+    private int p2score;
     
     public Simulation(int width,int height,int dX,int dY)
     {
@@ -25,30 +27,55 @@ public class Simulation {
         lock = new ReentrantLock();
     }
     
+    public void score(int player){
+        lock.lock();
+        if (player == 1)
+            p1score ++;
+        else if (player == 2)
+            p2score ++;
+        lock.unlock();
+    }
+    
+    public int getScore (int player){
+        lock.lock();
+        if (player == 1)
+            return p1score;
+        else if (player == 2)
+            return p2score;
+        else{ 
+            lock.unlock();
+            return 0;
+        }
+    }
+    
     public void evolve(double time, int player)
     {
         lock.lock();
         
-        if (player == 1){
-            Diamond inner = player1;
-        } else if (player == 2){
-            Diamond inner = player2;
-        } else if (player == 3){
-            Box inner = scoreBox;
-        }
-        if (inner != null){
-            Ray newLoc = inner.bounceRay(ball.getRay(), time);
+            Ray newLoc = scoreBox.bounceRay(ball.getRay(), time);
             if(newLoc != null){
                 ball.setRay(newLoc);
-                ball.setLastPlayer(player);
+                score(ball.getLastPlayer()); //SCORES HERE
             } else {
                 newLoc = outer.bounceRay(ball.getRay(), time);
                 if(newLoc != null)
-                    ball.setRay(newLoc);
-                else
-                    ball.move(time);
+                    ball.setRay(newLoc); //Bounces off the outer wall
+                else {
+                    newLoc = player1.bounceRay(ball.getRay(), time);
+                    if (newLoc != null){
+                        ball.setRay(newLoc); //bounces off player 1, sets last player to player 1
+                        ball.setLastPlayer(1);
+                    } else {
+                        newLoc = player2.bounceRay(ball.getRay(), time);
+                        if(newLoc != null){
+                            ball.setRay(newLoc); //bounces off player 2, sets last player to player 2
+                            ball.setLastPlayer(2);
+                        } else{
+                            ball.move(time);
+                        }
+                    }
+                }
             } 
-        }
         lock.unlock();
     }
     
@@ -100,6 +127,7 @@ public class Simulation {
         newShapes.add(player1.getShape());
         newShapes.add(ball.getShape());
         newShapes.add(player2.getShape());
+        newShapes.add(scoreBox.getShape());
         return newShapes;
     }
     
