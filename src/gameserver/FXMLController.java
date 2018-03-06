@@ -69,6 +69,8 @@ class HandleAClient implements Runnable, game.GameConstants {
     private Diamond player2;
     private Simulation sim;
     private int clientNum;
+    private static String p1name;
+    private static String p2name;
 
     public HandleAClient(Socket socket,TextArea textArea,int clientNo, Simulation sim) {
       this.socket = socket;
@@ -126,6 +128,7 @@ class HandleAClient implements Runnable, game.GameConstants {
               }
               case EVOLVE: {
                   sim.evolve(Integer.parseInt(inputFromClient.readLine()));
+                  break;
               }
               case GET_POINTS: {
                   String opponent = inputFromClient.readLine();
@@ -140,10 +143,49 @@ class HandleAClient implements Runnable, game.GameConstants {
                           outputToClient.println(player2.getWallEndY(i));
                       }
                   }
+                  break;
               }
               case GET_CLIENT_NUM: {
                   outputToClient.println(clientNum);
                   outputToClient.flush();
+                  break;
+              }
+              case GET_NAME: {
+                  if (clientNum==1){
+                      if (p2name == null) {
+                          outputToClient.println("");
+                      }
+                      outputToClient.println(p2name);
+                  } else {
+                      if (p1name==null){
+                          outputToClient.println("");
+                      }
+                      outputToClient.println(p1name);
+                  }
+                  outputToClient.flush();
+                  break;
+              }
+              case SEND_NAME: {
+                  if (clientNum ==1){
+                      p1name = inputFromClient.readLine();
+                  } else{
+                      p2name = inputFromClient.readLine();
+                  }
+                  break;
+              }
+              case START_GAME_SIGNAL: {
+                  if (p1name != null && p2name != null){
+                      outputToClient.println(1);
+                  } else {
+                      outputToClient.println(2);
+                  }
+                  outputToClient.flush();
+                  break;
+              }
+              case SCORE: {
+                  if (clientNum == 1){
+                      
+                  }
               }
 //              case GET_COMMENT: {
 //                  int n = Integer.parseInt(inputFromClient.readLine());
