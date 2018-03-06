@@ -71,12 +71,16 @@ class HandleAClient implements Runnable, game.GameConstants {
     private int clientNum;
     private static String p1name;
     private static String p2name;
+    private static int p1score;
+    private static int p2score;
 
     public HandleAClient(Socket socket,TextArea textArea,int clientNo, Simulation sim) {
       this.socket = socket;
       this.textArea = textArea;
       this.sim = sim;
       this.clientNum = clientNo;
+      p1score = 0;
+      p2score = 0;
       if (clientNo==1){
           player = new Diamond(120, 120,10);
           player2 = new Diamond(60,60,10);
@@ -182,36 +186,27 @@ class HandleAClient implements Runnable, game.GameConstants {
                   outputToClient.flush();
                   break;
               }
-              case SCORE: {
+              case SEND_SCORE: {
                   if (clientNum == 1){
-                      
+                      p1score++;
+                  } else {
+                      p2score++;
                   }
+                  break;
               }
-//              case GET_COMMENT: {
-//                  int n = Integer.parseInt(inputFromClient.readLine());
-//                  outputToClient.println(room.getTranscriptComment(n));
-//                  outputToClient.flush();
-//                  System.out.print(room.getTranscriptComment(n));
-//                  break;
-//              }
-//              case SEND_ROOM: {
-//                  String roomString = inputFromClient.readLine();
-//                  if(getRoomFromString(roomString)!=null){
-//                    this.room = getRoomFromString(roomString);
-//                    transcript = room.getTranscript();
-//                    room.clientEntered();
-//                  }
-//                  break;
-//              }
-//              case GET_ROOM_LIST: {
-//                  outputToClient.println(FXMLDocumentController.roomList.size());
-//                  ListIterator<Room> itor = FXMLDocumentController.roomList.listIterator();
-//                  while (itor.hasNext()){
-//                    outputToClient.println(itor.next().getName());
-//                  } 
-//                  outputToClient.flush();
-//                  break;
-//              }
+              case GET_SCORE: {
+                  int pNum = 0;
+                  try {
+                      pNum = Integer.parseInt(inputFromClient.readLine());
+                  } catch (Exception ex) {}
+                  if (pNum ==1 ){
+                      outputToClient.println(p1score);
+                  } else if (pNum == 2){
+                      outputToClient.println(p2score);
+                  }
+                  outputToClient.flush();
+                  break;
+              }
           }
         }
       }

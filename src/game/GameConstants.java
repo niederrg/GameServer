@@ -11,6 +11,7 @@ public interface GameConstants {
     public static int GET_NAME = 7;
     public static int SEND_NAME = 8;
     public static int START_GAME_SIGNAL = 9;
-    public static int SCORE = 10;
+    public static int SEND_SCORE = 10;
+    public static int GET_SCORE = 11;
     
 }
