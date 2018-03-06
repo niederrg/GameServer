@@ -52,6 +52,7 @@ public class Box {
                 // Figure out where we end up after the reflection.
                 Point dest = newRay.endPoint(time-t);
                 return new Ray(dest,newRay.v,in.speed);
+                
             }
         }
         return null;

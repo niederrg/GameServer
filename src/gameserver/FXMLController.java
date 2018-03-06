@@ -69,18 +69,18 @@ class HandleAClient implements Runnable, game.GameConstants {
     private Diamond player2;
     private Simulation sim;
     private int clientNum;
-    private static String p1name;
-    private static String p2name;
     private static int p1score;
     private static int p2score;
+    private static Boolean p1ready;
+    private static Boolean p2ready;
 
     public HandleAClient(Socket socket,TextArea textArea,int clientNo, Simulation sim) {
       this.socket = socket;
       this.textArea = textArea;
       this.sim = sim;
       this.clientNum = clientNo;
-      p1score = 0;
-      p2score = 0;
+      p1ready = false;
+      p2ready = false;
       if (clientNo==1){
           player = new Diamond(120, 120,10);
           player2 = new Diamond(60,60,10);
@@ -91,6 +91,13 @@ class HandleAClient implements Runnable, game.GameConstants {
       }    
     }
     
+    public void score(int playerNum){
+        if (playerNum == 1){
+            p1score ++;
+        } else if (playerNum ==2){
+            p2score ++;
+        }
+    }
     
     public void run() {
       try {
@@ -131,7 +138,7 @@ class HandleAClient implements Runnable, game.GameConstants {
                   break;
               }
               case EVOLVE: {
-                  sim.evolve(Integer.parseInt(inputFromClient.readLine()));
+                  sim.evolve(Integer.parseInt(inputFromClient.readLine()),clientNum);
                   break;
               }
               case GET_POINTS: {
@@ -154,44 +161,38 @@ class HandleAClient implements Runnable, game.GameConstants {
                   outputToClient.flush();
                   break;
               }
-              case GET_NAME: {
-                  if (clientNum==1){
-                      if (p2name == null) {
-                          outputToClient.println("");
+              case SEND_READY: {
+                  if (clientNum ==1){
+                      if (inputFromClient.readLine().equalsIgnoreCase("true")){
+                          p1ready = true;
+                      } else {
+                          p1ready = false;
                       }
-                      outputToClient.println(p2name);
-                  } else {
-                      if (p1name==null){
-                          outputToClient.println("");
+                  } else if (clientNum == 2) {
+                      if (inputFromClient.readLine().equalsIgnoreCase("true")){
+                          p2ready = true;
+                      } else {
+                          p2ready = false;
                       }
-                      outputToClient.println(p1name);
+                  }
+                  break;
+              }
+              case GET_READY: {
+                  if (clientNum ==1 ){
+                      outputToClient.println(p2ready);
+                  } else if (clientNum == 2){
+                      outputToClient.println(p1ready);
                   }
                   outputToClient.flush();
                   break;
               }
-              case SEND_NAME: {
-                  if (clientNum ==1){
-                      p1name = inputFromClient.readLine();
-                  } else{
-                      p2name = inputFromClient.readLine();
-                  }
-                  break;
-              }
               case START_GAME_SIGNAL: {
-                  if (p1name != null && p2name != null){
+                  if (p1ready == true && p1ready == true){
                       outputToClient.println(1);
                   } else {
                       outputToClient.println(2);
                   }
                   outputToClient.flush();
-                  break;
-              }
-              case SEND_SCORE: {
-                  if (clientNum == 1){
-                      p1score++;
-                  } else {
-                      p2score++;
-                  }
                   break;
               }
               case GET_SCORE: {

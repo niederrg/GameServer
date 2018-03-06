@@ -8,6 +8,7 @@ import physics.*;
 public class Ball {
     private Ray r;
     private Circle c;
+    private int lastPlayer;
     
     public Ball(int startX,int startY,int dX,int dY)
     {
@@ -15,6 +16,12 @@ public class Ball {
         double speed = v.length();
         r = new Ray(new Point(startX,startY),v,speed);
     }
+    
+    public void setLastPlayer(int i){
+        this.lastPlayer = i;
+    }
+    
+    public int getLastPlayer() { return lastPlayer; }
     
     public Ray getRay()
     {
