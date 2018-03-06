@@ -46,6 +46,7 @@ public class FXMLController implements Initializable {
               " at " + new Date() + '\n');
             });
           
+          Simulation sim = new Simulation(300,250,2,2);
           // Create and start a new thread for the connection
           new Thread(new HandleAClient(socket,textArea,clientNo,sim)).start();
         }
@@ -69,16 +70,16 @@ class HandleAClient implements Runnable, game.GameConstants {
     private Diamond player2;
     private Simulation sim;
     private int clientNum;
-    private static Boolean p1ready;
-    private static Boolean p2ready;
+    private static int p1ready;
+    private static int p2ready;
 
     public HandleAClient(Socket socket,TextArea textArea,int clientNo, Simulation sim) {
       this.socket = socket;
       this.textArea = textArea;
       this.sim = sim;
       this.clientNum = clientNo;
-      p1ready = false;
-      p2ready = false;
+      p1ready = 0; // 0 = false
+      p2ready = 0; // 1 = true
       if (clientNo==1){
           player = new Diamond(120, 120,10);
           player2 = new Diamond(60,60,10);
@@ -157,16 +158,16 @@ class HandleAClient implements Runnable, game.GameConstants {
               }
               case SEND_READY: {
                   if (clientNum ==1){
-                      if (inputFromClient.readLine().equalsIgnoreCase("true")){
-                          p1ready = true;
+                      if (Integer.parseInt(inputFromClient.readLine())==1){
+                          p1ready = 1; //true
                       } else {
-                          p1ready = false;
+                          p1ready = 0; //false
                       }
                   } else if (clientNum == 2) {
-                      if (inputFromClient.readLine().equalsIgnoreCase("true")){
-                          p2ready = true;
+                      if (Integer.parseInt(inputFromClient.readLine())==1){
+                          p2ready = 1;
                       } else {
-                          p2ready = false;
+                          p2ready = 0;
                       }
                   }
                   break;
@@ -181,10 +182,10 @@ class HandleAClient implements Runnable, game.GameConstants {
                   break;
               }
               case START_GAME_SIGNAL: {
-                  if (p1ready == true && p1ready == true){
+                  if (p1ready == 1 && p1ready == 1){
                       outputToClient.println(1);
                   } else {
-                      outputToClient.println(2);
+                      outputToClient.println(0);
                   }
                   outputToClient.flush();
                   break;
