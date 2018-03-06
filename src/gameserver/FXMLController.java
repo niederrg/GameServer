@@ -195,6 +195,10 @@ class HandleAClient implements Runnable, game.GameConstants {
                   outputToClient.flush();
                   break;
               }
+              case END_GAME: {
+                  // WHAT DOES THE SERVER DO WHEN WE END THE GAME?????????
+                  sim.endGame(Integer.parseInt(inputFromClient.readLine()));
+              }
           }
         }
       }
