@@ -22,7 +22,7 @@ public class FXMLController implements Initializable {
     @FXML
     private TextArea textArea;
    
-    private int clientNo = 0;
+    private static int clientNo = 0;
     Simulation sim;
     
     @Override
@@ -55,6 +55,10 @@ public class FXMLController implements Initializable {
       }
     }).start();
     }    
+    
+    public static void clientLeft() {
+        clientNo--;
+    }
 }
 
 
@@ -171,6 +175,7 @@ class HandleAClient implements Runnable, game.GameConstants {
       }
       catch(IOException ex) {
           Platform.runLater(()->textArea.appendText("Exception in client thread: "+ex.toString()+"\n"));
+          FXMLController.clientLeft();
       }
     }
   }
