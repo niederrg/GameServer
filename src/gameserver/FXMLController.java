@@ -66,8 +66,8 @@ public class FXMLController implements Initializable {
 class HandleAClient implements Runnable, game.GameConstants {
     private Socket socket;
     private TextArea textArea;
-    private Diamond player;
-    private Diamond player2;
+    private static Diamond player1;
+    private static Diamond player2;
     private Simulation sim;
     private int clientNum;
     private static int p1ready;
@@ -82,11 +82,11 @@ class HandleAClient implements Runnable, game.GameConstants {
         p1ready = 0; // 0 = false
         p2ready = 0; // 1 = true
         if (clientNo==1){
-            player = new Diamond(120, 120,10);
+            player1 = new Diamond(120, 120,10);
             player2 = new Diamond(60,60,10);
         }
         else{
-            player = new Diamond(60,60,10);
+            player1 = new Diamond(60,60,10);
             player2 = new Diamond(120,120,10);
         }    
     }
@@ -125,11 +125,11 @@ class HandleAClient implements Runnable, game.GameConstants {
                         }
                     }
                     case GET_POINTS: {
-                        String opponent = inputFromClient.readLine();
-                        if (opponent.equalsIgnoreCase("false")){
+                        int playerNum = Integer.parseInt(inputFromClient.readLine());
+                        if (playerNum==1){
                             for(int i=0;i<4;i++){
-                                outputToClient.println(player.getWallEndX(i));
-                                outputToClient.println(player.getWallEndY(i));
+                                outputToClient.println(player1.getWallEndX(i));
+                                outputToClient.println(player1.getWallEndY(i));
                             }
                         }else{
                             for(int i=0;i<4;i++){
@@ -137,6 +137,7 @@ class HandleAClient implements Runnable, game.GameConstants {
                                 outputToClient.println(player2.getWallEndY(i));
                             }
                         }
+                        outputToClient.flush();
                         break;
                     }
                     case GET_CLIENT_NUM: {
@@ -157,6 +158,8 @@ class HandleAClient implements Runnable, game.GameConstants {
                             } else {
                                 p2ready = 0;
                             }
+                        } else {
+                            inputFromClient.readLine();
                         }
                         break;
                     }
@@ -165,7 +168,7 @@ class HandleAClient implements Runnable, game.GameConstants {
                             outputToClient.println(p2ready);
                         } else if (clientNum == 2){
                             outputToClient.println(p1ready);
-                        }
+                        } 
                         outputToClient.flush();
                         break;
                     }
@@ -179,8 +182,8 @@ class HandleAClient implements Runnable, game.GameConstants {
                         break;
                     }
                     case GET_SCORE: {
-                        outputToClient.println(getScore(1));
-                        outputToClient.println(getScore(2));
+                        int playerNum = Integer.parseInt(inputFromClient.readLine());
+                        outputToClient.println(getScore(playerNum));
                         outputToClient.flush();
                         break;
                     }
