@@ -104,18 +104,9 @@ class HandleAClient implements Runnable, game.GameConstants {
         while (true) {
           // Receive request code from the client
           int request = Integer.parseInt(inputFromClient.readLine());
+          sim.evolve(1.0, clientNum);
           // Process request
           switch(request) {
-              case SEND_DXDY: {
-                  int dX = Integer.parseInt(inputFromClient.readLine());
-                  int dY = Integer.parseInt(inputFromClient.readLine());
-                  player.move(dX, dY);
-                  break;
-              }
-              case EVOLVE: {
-                  sim.evolve(Integer.parseInt(inputFromClient.readLine()),clientNum);
-                  break;
-              }
               case GET_POINTS: {
                   String opponent = inputFromClient.readLine();
                   if (opponent.equalsIgnoreCase("false")){

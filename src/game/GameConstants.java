@@ -2,10 +2,10 @@
 package game;
 
 public interface GameConstants {
-    public static int SEND_DXDY = 1;
     
     
-    public static int EVOLVE = 4;
+    
+    
     public static int GET_POINTS = 5;
     public static int GET_CLIENT_NUM = 6;
     public static int SEND_READY = 7;
