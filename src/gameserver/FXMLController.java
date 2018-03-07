@@ -162,7 +162,7 @@ class HandleAClient implements Runnable, game.GameConstants {
                   break;
               }
               case START_GAME_SIGNAL: {
-                  if (p1ready == 1 && p1ready == 1){
+                  if (p1ready == 1 && p2ready == 1){
                       outputToClient.println(1);
                   } else {
                       outputToClient.println(0);
