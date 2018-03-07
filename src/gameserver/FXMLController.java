@@ -105,7 +105,6 @@ class HandleAClient implements Runnable, game.GameConstants {
             while (true) {
                 // Receive request code from the client
                 int request = Integer.parseInt(inputFromClient.readLine());
-                sim.evolve(1.0, clientNum);
                 // Process request
                 switch(request) {
                     case SEND_MOVEMENT: {
