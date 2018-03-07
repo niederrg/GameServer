@@ -2,7 +2,7 @@
 package game;
 
 public interface GameConstants {
-    
+    public static int SEND_MOVEMENT = 1;
     
     
     

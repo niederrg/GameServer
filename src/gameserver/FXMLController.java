@@ -72,6 +72,7 @@ class HandleAClient implements Runnable, game.GameConstants {
     private int clientNum;
     private static int p1ready;
     private static int p2ready;
+    private final static int speed = 10;
 
     public HandleAClient(Socket socket,TextArea textArea,int clientNo, Simulation sim) {
       this.socket = socket;
@@ -107,6 +108,23 @@ class HandleAClient implements Runnable, game.GameConstants {
           sim.evolve(1.0, clientNum);
           // Process request
           switch(request) {
+              case SEND_MOVEMENT: {
+                  String direction = inputFromClient.readLine();
+                  switch(direction){
+                      case "down": 
+                          sim.moveInner(0, speed, clientNum);
+                          break;
+                      case "up": 
+                          sim.moveInner(0,-1*speed,clientNum);
+                          break;
+                      case "right": 
+                          sim.moveInner(speed, 0, clientNum);
+                          break;
+                      case "left":
+                          sim.moveInner(-1*speed, 0, clientNum);
+                          break;
+                  }
+              }
               case GET_POINTS: {
                   String opponent = inputFromClient.readLine();
                   if (opponent.equalsIgnoreCase("false")){
