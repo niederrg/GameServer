@@ -112,26 +112,6 @@ class HandleAClient implements Runnable, game.GameConstants {
                   player.move(dX, dY);
                   break;
               }
-              case GET_X: {
-                  String opponent = inputFromClient.readLine();
-                  if (opponent.equalsIgnoreCase("false")){
-                    outputToClient.println(player.x);
-                  } else{
-                    outputToClient.println(player2.x);
-                  }
-                  outputToClient.flush();
-                  break;
-              }
-              case GET_Y: {
-                  String opponent = inputFromClient.readLine();
-                  if (opponent.equalsIgnoreCase("false")){
-                      outputToClient.println(player.y);
-                  }else{
-                    outputToClient.println(player2.y);
-                  }
-                  outputToClient.flush();
-                  break;
-              }
               case EVOLVE: {
                   sim.evolve(Integer.parseInt(inputFromClient.readLine()),clientNum);
                   break;
@@ -199,6 +179,17 @@ class HandleAClient implements Runnable, game.GameConstants {
               case END_GAME: {
                   // WHAT DOES THE SERVER DO WHEN WE END THE GAME?????????
                   sim.endGame(Integer.parseInt(inputFromClient.readLine()));
+                  break;
+              }
+              case GET_BALL_X: {
+                  outputToClient.println(sim.getBall().getX());
+                  outputToClient.flush();
+                  break;
+              }
+              case GET_BALL_Y: {
+                  outputToClient.println(sim.getBall().getY());
+                  outputToClient.flush();
+                  break;
               }
           }
         }

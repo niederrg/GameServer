@@ -50,4 +50,12 @@ public class Ball {
         c.setCenterX(r.origin.x);
         c.setCenterY(r.origin.y);
     }
+   
+    public Double getX(){
+        return r.origin.x;
+    }
+    
+    public Double getY(){
+        return r.origin.y;
+    }
 }

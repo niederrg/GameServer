@@ -13,5 +13,7 @@ public interface GameConstants {
     public static int START_GAME_SIGNAL = 9;
     public static int END_GAME = 10;
     public static int GET_SCORE = 11;
+    public static int GET_BALL_X = 12;
+    public static int GET_BALL_Y = 13;
     
 }

@@ -60,6 +60,8 @@ public class Simulation {
         }
     }
     
+    public Ball getBall(){ return ball; }
+    
     public void evolve(double time, int player)
     {
         lock.lock();
