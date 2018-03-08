@@ -30,22 +30,25 @@ public class Simulation {
     public void score(int player){
         lock.lock();
         if (player == 1)
-            if (p1score <10) // {
+            if (p1score <10)  {
                 p1score ++;
-           // } else {
-             //   endGame(1);
-            //}
+            }else {
+                endGame(1);
+            }
         else if (player == 2)
-            if (p2score < 10)// {
+            if (p2score < 10) {
                 p2score ++;
-          //  }else {
-            //    endGame(2);
-            //}
+            }else {
+                endGame(2);
+            }
         lock.unlock();
     }
     
     public void endGame(int winner){
-        
+        if (winner == 1)
+            System.out.println("Player 1 is the winner!");
+        else 
+            System.out.println("Player 2 is the winner!");
     }
     
     public int getScore (int player){
