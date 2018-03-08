@@ -108,6 +108,7 @@ class HandleAClient implements Runnable, game.GameConstants {
                 // Process request
                 switch(request) {
                     case SEND_MOVEMENT: {
+                        System.out.println("SEND_MOVEMENT " + clientNum);
                         String direction = inputFromClient.readLine();
                         switch(direction){
                             case "down": 
@@ -125,6 +126,7 @@ class HandleAClient implements Runnable, game.GameConstants {
                         }
                     }
                     case GET_POINTS: {
+                        System.out.println("GET_POINTS " + clientNum);
                         int playerNum = Integer.parseInt(inputFromClient.readLine());
                         if (playerNum==1){
                             for(int i=0;i<4;i++){
@@ -141,11 +143,13 @@ class HandleAClient implements Runnable, game.GameConstants {
                         break;
                     }
                     case GET_CLIENT_NUM: {
+                        System.out.println("GET_CLIENT_NUM " + clientNum);
                         outputToClient.println(clientNum);
                         outputToClient.flush();
                         break;
                     }
                     case SEND_READY: {
+                        System.out.println("SEND_READY " + clientNum);
                         if (clientNum ==1){
                             if (Integer.parseInt(inputFromClient.readLine())==1){
                                 p1ready = 1; //true
@@ -164,6 +168,7 @@ class HandleAClient implements Runnable, game.GameConstants {
                         break;
                     }
                     case GET_READY: {
+                        System.out.println("GET_READY " + clientNum);
                         if (clientNum ==1 ){
                             outputToClient.println(p2ready);
                         } else if (clientNum == 2){
@@ -173,6 +178,7 @@ class HandleAClient implements Runnable, game.GameConstants {
                         break;
                     }
                     case START_GAME_SIGNAL: {
+                        System.out.println("START_GAME_SIGNAL " + clientNum);
                         if (p1ready == 1 && p2ready == 1){
                             outputToClient.println(1);
                         } else {
@@ -182,22 +188,26 @@ class HandleAClient implements Runnable, game.GameConstants {
                         break;
                     }
                     case GET_SCORE: {
+                        System.out.println("GET_SCORE " + clientNum);
                         int playerNum = Integer.parseInt(inputFromClient.readLine());
                         outputToClient.println(getScore(playerNum));
                         outputToClient.flush();
                         break;
                     }
                     case END_GAME: {
+                        System.out.println("END_GAME " + clientNum);
                         // WHAT DOES THE SERVER DO WHEN WE END THE GAME?????????
                         sim.endGame(Integer.parseInt(inputFromClient.readLine()));
                         break;
                     }
                     case GET_BALL_X: {
+                        System.out.println("GET_BALL_X " + clientNum);
                         outputToClient.println(sim.getBall().getX());
                         outputToClient.flush();
                         break;
                     }
                     case GET_BALL_Y: {
+                        System.out.println("GET_BALL_Y " + clientNum);
                         outputToClient.println(sim.getBall().getY());
                         outputToClient.flush();
                         break;
