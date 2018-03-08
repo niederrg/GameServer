@@ -32,7 +32,8 @@ public class FXMLController implements Initializable {
             try {
                 // Create a server socket
                 ServerSocket serverSocket = new ServerSocket(8000);
-
+                Simulation sim = new Simulation(300,250,2,2);
+                
                 while (true) {
                     // Listen for a new connection request
                     Socket socket = serverSocket.accept();
@@ -46,7 +47,7 @@ public class FXMLController implements Initializable {
                             " at " + new Date() + '\n');
                     });
 
-                    Simulation sim = new Simulation(300,250,2,2);
+                    
                     // Create and start a new thread for the connection
                     new Thread(new HandleAClient(socket,textArea,clientNo,sim)).start();
                 }
@@ -124,6 +125,7 @@ class HandleAClient implements Runnable, game.GameConstants {
                                 sim.moveInner(-1*speed, 0, clientNum);
                                 break;
                         }
+                        break;
                     }
                     case GET_POINTS: {
                         //System.out.println("GET_POINTS " + clientNum);

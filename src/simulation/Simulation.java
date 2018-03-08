@@ -20,7 +20,7 @@ public class Simulation {
     public Simulation(int width,int height,int dX,int dY)
     {
         outer = new Box(0,0,width,height,false);
-        ball = new Ball(width/2,height/2,dX,dY);
+        ball = new Ball(width/2-40,height/2,dX,dY);
         player1 = new Diamond(width - 60,height - 40, 40);
         player2 = new Diamond(60, 40, 20);
         scoreBox = new Box(width-5,height-5,10,10,true);
